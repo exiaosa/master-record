@@ -51,8 +51,8 @@ class MasterRecordPage_Controller extends Page_Controller
     public function init()
     {
         parent::init();
-        Requirements::css('master-records/css/main.css');
-        Requirements::javascript('master-records/js/main.js');
+        Requirements::css('master-record/css/main.css');
+        Requirements::javascript('master-record/js/main.js');
 
     }
 
@@ -220,11 +220,14 @@ class MasterRecordPage_Controller extends Page_Controller
 
         $file = date("Ymdhisa").'-'.$email;
 
+        if (!file_exists('../assets/UserData')) {
+            mkdir('../assets/UserData', 0777, true);
+        }
 
         $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/assets/UserData/".$file.".html","wb");
         $head = '<!DOCTYPE html> <html> <head> <title>Personal info </title> '.
         '<style type="text/css"> body{ background:#e9ebee; font-family: Arial; } .header{ margin: 0 auto; width: 598px; background: #fff; border-radius: 3px; padding: 15px; color: #1d2129; font-size: 16px; margin-bottom:30px; font-weight: bold; } .item{ margin: 0 auto; width: 598px; background: #fff; border-radius: 3px;padding: 15px; margin-bottom:20px; color: #1d2129; font-size: 15px; } .title{ display: block; width:100%; color: #8d949e; font-size: 13px; line-height: 16px; padding:10px 0; border-top:1px solid #8d949e; } .title:first-child{ color:#1d2129;display: block; width:100%; font-weight: bold; padding-bottom:15px;padding-top:0;border-top: none; }.footer{clear: both; color: #7f7f7f; font-size: 14px; margin-bottom: 20px; margin-top: 10px; text-align: center;} </style>'.
-        '</head> <body><div class="header">The personal info of user'. $email.'</div>';
+        '</head> <body><div class="header">The personal info of user '. $email.'</div>';
         $foot = '<div class="footer">Generate on '.$record->Created.'</div></body></html>';
         fwrite($fp,$head);
 
@@ -255,9 +258,6 @@ class MasterRecordPage_Controller extends Page_Controller
         }
         fwrite($fp,$foot);
         fclose($fp);
-
-
-
 
         $fileName = '../assets/UserData/'.$file.'.zip';
 
@@ -320,6 +320,27 @@ class MasterRecordPage_Controller extends Page_Controller
         }else{
             return false;
         }
+    }
+
+    /**
+     * Handles returning a JSON response, makes sure Content-Type header is set
+     *
+     * @param array $array
+     * @param bool $isJson Is the passed string already a json string
+     * @return SS_HTTPResponse
+     */
+    public function jsonResponse($array, $isJson = false)
+    {
+        $json = $array;
+        if (!$isJson) {
+            $json = Convert::raw2json($array);
+        }
+
+        $response = new SS_HTTPResponse($json);
+        $response->addHeader('Content-Type', 'application/json');
+        $response->addHeader('Vary', 'Accept');
+
+        return $response;
     }
 
 }
