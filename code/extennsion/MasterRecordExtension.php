@@ -46,9 +46,6 @@ class MasterRecordExtension extends Extension
 
     public function onAfterSubmit($data){
 
-        /*$record_class = 'Page';
-        $id = 736;
-        $email = "jenny@webtorque.co.nz";*/
         $record_class = $data->ClassName;
         $id = $data->ID;
         $email = $data->Email;
