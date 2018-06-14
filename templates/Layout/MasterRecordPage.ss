@@ -50,10 +50,10 @@
                     </table>
                     <div class="record-actions">
                         <div class="option">
-                            <span><img src="master-records/images/info.png" ></span>Do you want to download your personal file? <span class="action file-action">Download</span>
+                            <span><img src="master-record/images/info.png" ></span>Do you want to download your personal file? <span class="action file-action">Download</span>
                         </div>
                         <div class="option">
-                            <span><img src="master-records/images/info.png" ></span>Do you want to delete your personal file?  <span class="action delete-action">Delete</span>
+                            <span><img src="master-record/images/info.png" ></span>Do you want to delete your personal file?  <span class="action delete-action">Delete</span>
                             <div class="note">$getMasterRecordConfig.DeleteNote</div>
                         </div>
                     </div>

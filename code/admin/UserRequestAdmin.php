@@ -87,7 +87,6 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
             $request = UserRequest::get()->filter("Email",$data['Email'])->first();
             $master_record = MasterRecord::get()->filter("Email",$data['Email'])->first();
 
-            //$submissions = MasterRecordSubmission::get()->filter("Email",$data['Email']);
 
             foreach($master_record->submissions() as $submission){
 
