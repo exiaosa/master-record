@@ -1,0 +1,10 @@
+---
+Name: masterrecordroutes
+After:
+  - '#rootroutes'
+  - '#modelascontrollerroutes'
+  - '#restfulserverroutes'
+---
+Director:
+  rules:
+    'master-record-page/access//$Action/$ID': 'MasterRecordPage_Controller',

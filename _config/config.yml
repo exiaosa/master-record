@@ -1,0 +1,11 @@
+Page_Controller:
+  extensions:
+    - MasterRecordExtension
+
+Form:
+  extensions:
+    - MasterRecordExtension
+
+Controller:
+  extensions:
+    - MasterRecordExtension
