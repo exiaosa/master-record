@@ -3,6 +3,7 @@
   "description": "A module that add user form and user form record page.",
   "license": "BSD-2-Clause",
   "type": "silverstripe-module",
+  "minimum-stability":"dev",
   "keywords": [
     "gdpr",
     "record",
