@@ -1,0 +1,15 @@
+.Actions #Form_ItemEditForm_action_save{
+    display: none;
+}
+
+.Actions #Form_ItemEditForm_action_doSaveAndQuit{
+    display: none;
+}
+
+.better-buttons-utils{
+    display: none;
+}
+
+.cms .ui-widget.gridfield-better-buttons-delete{
+    display: none;
+}

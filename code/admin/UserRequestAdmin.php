@@ -17,6 +17,7 @@ class UserRequestAdmin extends ModelAdmin
         parent::init();
 
         Requirements::javascript("master-record/js/LeftAndAdmin.js");
+        Requirements::css("master-record/css/LeftAndAdmin.css");
     }
 
 
