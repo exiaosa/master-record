@@ -17,9 +17,13 @@ class MasterRecord extends DataObject
     );
 
     private static $summary_fields=array(
-        'Email' => 'Email'
+        'Email' => 'Email',
+        'totalRecords' => 'Total Records'
     );
 
+    public function gettotalRecords(){
+        return $this->submissions()->count();
+    }
 
     public function onAfterWrite()
     {

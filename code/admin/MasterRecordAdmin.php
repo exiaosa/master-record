@@ -22,12 +22,12 @@ class MasterRecordAdmin extends ModelAdmin
 
         $listField->getConfig()->addComponent(new GridFieldFilterHeader());
         //$listField->getConfig()->addComponent(new GridFieldDeleteDataAction());
+        $listField->getConfig()->addComponent(new GridFieldViewAction());
         $listField->getConfig()->addComponent(new GridFieldDownloadAction());
 
         $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
-        //$listField->getConfig()->removeComponentsByType("GridFieldEditButton");
+        $listField->getConfig()->removeComponentsByType("GridFieldEditButton");
         $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
-        /*}*/
 
         return $form;
     }

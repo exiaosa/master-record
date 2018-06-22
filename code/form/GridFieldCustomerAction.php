@@ -193,3 +193,51 @@ class GridFieldDownloadAction implements GridField_ColumnProvider, GridField_Act
     }
 }
 
+class GridFieldViewAction implements GridField_ColumnProvider, GridField_ActionProvider
+{
+
+    public function augmentColumns($gridField, &$columns)
+    {
+        if(!in_array('Actions', $columns)) {
+            $columns[] = 'Actions';
+        }
+    }
+
+    public function getColumnAttributes($gridField, $record, $columnName)
+    {
+        return array('class' => 'col-buttons');
+    }
+
+    public function getColumnMetadata($gridField, $columnName) {
+        if($columnName == 'Actions') {
+            return array('title' => '');
+        }
+    }
+
+    public function getColumnsHandled($gridField) {
+        return array('Actions');
+    }
+
+    public function getColumnContent($gridField, $record, $columnName) {
+        // No permission checks, handled through GridFieldDetailForm,
+        // which can make the form readonly if no edit permissions are available.
+
+        $email = $gridField->getList()->byID($record->ID)->Email;
+
+        $data = new ArrayData(array(
+            'Link' => 'assets/UserData/'.$email.'-info.html'
+        ));
+
+        return $data->renderWith('GridFieldViewButton');
+    }
+
+    public function getActions($gridField)
+    {
+
+    }
+
+    public function handleAction(GridField $gridField, $actionName, $arguments, $data)
+    {
+
+    }
+}

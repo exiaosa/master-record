@@ -1,7 +1,6 @@
 (function($){
     $.entwine('ss', function($){
-        alert();
-
+       
         $('.cms').on('click', '#action_doDeleteRecord', function() {
             if (confirm("Are you sure you want to delete this record?")) {
                 if (confirm("Ok if you hit delete again this is irreversible.")) {
