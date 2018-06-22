@@ -65,5 +65,5 @@ $(document).ready(function () {
 
     });
 
-//<a href="/assets/Uploads/059940e66b/Vitora_Tyres_2018.pdf" a="" target="_blank">View PDF</a>
+
 });

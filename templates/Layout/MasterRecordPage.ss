@@ -50,7 +50,10 @@
                     </table>
                     <div class="record-actions">
                         <div class="option">
-                            <span><img src="master-record/images/info.png" ></span>Do you want to download your personal file? <span class="action file-action">Download</span>
+                            <span><img src="master-record/images/info.png" ></span>Do you want to download your personal file?
+                                <span class="action file-action">
+                                    <a href="assets/UserData/{$getUserInfo.Email}-info.html" download="">Download</a>
+                                </span>
                         </div>
                         <div class="option">
                             <span><img src="master-record/images/info.png" ></span>Do you want to delete your personal file?  <span class="action delete-action">Delete</span>

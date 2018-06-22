@@ -74,6 +74,7 @@ class MasterRecordPage_Controller extends Page_Controller
         $name = $data['Name'];
         $address = $data['Email'];
         $siteConfig = MasterRecordConfig::current_config();
+        $user = '';
 
         $URI = "/master-record-page";
         $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$URI";
@@ -86,14 +87,14 @@ class MasterRecordPage_Controller extends Page_Controller
             $user->update($data);
             $user->write();
 
-            $this->extend('onAfterSubmit',$user);
+
         }else{
             $user = UserRequest::get()->filter('Email',$address)->first();
             $user->Encode = $encode;
             $user->IsViewed = FALSE;
             $user->write();
         }
-
+        $this->extend('onAfterSubmit',$user);
 
         $email = Email::create();
         $email->setTo(trim($address));
@@ -207,68 +208,16 @@ class MasterRecordPage_Controller extends Page_Controller
 
 
     /**
-     * Function is to create the user html file for downloading
+     * Function is get html file for downloading
      * @return SS_HTTPResponse
      */
     public function fileRecord(){
         $vars = $this->request->requestVars();
         $email = $vars['Email'];
-        $siteConfig = MasterRecordConfig::current_config();
-
-        $record = MasterRecord::get()->filter("Email",$email)->first();
-        $content = "";
-
-        $file = date("Ymdhisa").'-'.$email;
-
-        if (!file_exists('../assets/UserData')) {
-            mkdir('../assets/UserData', 0777, true);
-        }
-
-        $fp = fopen($_SERVER['DOCUMENT_ROOT'] . "/assets/UserData/".$file.".html","wb");
-        $head = '<!DOCTYPE html> <html> <head> <title>Personal info </title> '.
-        '<style type="text/css"> body{ background:#e9ebee; font-family: Arial; } .header{ margin: 0 auto; width: 598px; background: #fff; border-radius: 3px; padding: 15px; color: #1d2129; font-size: 16px; margin-bottom:30px; font-weight: bold; } .item{ margin: 0 auto; width: 598px; background: #fff; border-radius: 3px;padding: 15px; margin-bottom:20px; color: #1d2129; font-size: 15px; } .title{ display: block; width:100%; color: #8d949e; font-size: 13px; line-height: 16px; padding:10px 0; border-top:1px solid #8d949e; } .title:first-child{ color:#1d2129;display: block; width:100%; font-weight: bold; padding-bottom:15px;padding-top:0;border-top: none; }.footer{clear: both; color: #7f7f7f; font-size: 14px; margin-bottom: 20px; margin-top: 10px; text-align: center;} </style>'.
-        '</head> <body><div class="header">The personal info of user '. $email.'</div>';
-        $foot = '<div class="footer">Generate on '.$record->Created.'</div></body></html>';
-        fwrite($fp,$head);
-
-        foreach ($record->submissions() as $submission){
-            $class = $submission->RecordsClassName;
-            $id = $submission->RecordID;
-            $item = $class::get()->filter("ID",$id)->first();
-
-            $item_head ='<div class="item">';
-            fwrite($fp,$item_head);
-            foreach($item->toMap() as $info){
-
-                $content = '<div class="title">'.$info.'</div>';
 
 
-                fwrite($fp,$content);
-            }
+        $file = $email.'-info';
 
-            /*$content = '<div class="item">'.
-                            '<div class="title">Origin:'.$item->ClassName.'</div>'.
-                            '<div class="date">Date:'.$submission->Created.'</div>'.
-                       '</div>';*/
-
-            //fwrite($fp,$content);
-
-           $item_foot ='</div>';
-           fwrite($fp,$item_foot);
-        }
-        fwrite($fp,$foot);
-        fclose($fp);
-
-        $fileName = '../assets/UserData/'.$file.'.zip';
-
-        $files_to_zip = [dirname(__DIR__.'/../../assets/UserData/'.$file.'.html').'/'.$file.'.html'];
-
-        $result = $this->createZip($files_to_zip, $fileName);
-
-        if($result){
-            unlink(dirname(__DIR__.'/../../assets/UserData/'.$file.'.html').'/'.$file.'.html');
-
-        }
 
         if ($this->request->isAjax()) {
             return $this->jsonResponse(array(

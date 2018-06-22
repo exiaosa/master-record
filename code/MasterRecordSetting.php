@@ -9,7 +9,7 @@
 class MasterRecordSetting extends SiteConfigLeftAndMain
 {
     private static $url_segment = 'master-record-settings';
-    private static $menu_title = 'Master Record';
+    private static $menu_title = 'Master Record Setting';
     private static $tree_class = 'MasterRecordConfig';
 
     public function getEditForm($id = null, $fields = null)

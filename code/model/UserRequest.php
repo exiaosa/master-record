@@ -36,6 +36,11 @@ class UserRequest extends DataObject
         $deleteAction->addExtraClass('ss-ui-action-constructive');
         $actions->push($deleteAction);
 
+        $actions->push(LiteralField::create(
+            'DownloadLink',
+            '<a href="assets/UserData/' . $this->Email . '-info.html" target="_blank" class="ss-ui-button" download>Download the file</a>'
+        ));
+
         return $actions;
     }
 }
