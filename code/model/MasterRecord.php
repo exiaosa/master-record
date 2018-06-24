@@ -32,5 +32,4 @@ class MasterRecord extends DataObject
     }
 
 
-
 }

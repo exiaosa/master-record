@@ -11,7 +11,7 @@ class MasterRecordExtension extends Extension
 
     );
 
-    //hook master record function for User Defiend Form
+    //hook master record function for User Defined Form
     public function updateEmailData($emailData, $attachments){
 
         $items = $emailData['Fields']->items;

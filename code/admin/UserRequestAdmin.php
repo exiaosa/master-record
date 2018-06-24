@@ -8,7 +8,7 @@
 
 class UserRequestAdmin extends ModelAdmin
 {
-    private static $managed_models = array('UserRequest');
+    private static $managed_models = array('UserRequest','MasterRecord');
     private static $url_segment = 'user-request';
     private static $menu_title = 'Master Record User Request';
 
@@ -25,7 +25,7 @@ class UserRequestAdmin extends ModelAdmin
         $form = parent::getEditForm($id, $fields);
 
 
-       /* if($this->modelClass == 'UserRequest'){*/
+        if($this->modelClass == 'UserRequest'){
             $listField = $form->Fields()->fieldByName($this->modelClass);
             if ($gridField = $listField->getConfig()->getComponentByType('GridFieldDetailForm'))
                 $gridField->setItemRequestClass('RequestFieldDetailForm_ItemRequest');
@@ -37,7 +37,18 @@ class UserRequestAdmin extends ModelAdmin
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             //$listField->getConfig()->removeComponentsByType("GridFieldEditButton");
             $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
-        /*}*/
+
+        }else if($this->modelClass == 'MasterRecord') {
+            $listField = $form->Fields()->fieldByName($this->modelClass);
+
+            //$listField->getConfig()->addComponent(new GridFieldDeleteDataAction());
+            $listField->getConfig()->addComponent(new GridFieldViewAction());
+            $listField->getConfig()->addComponent(new GridFieldDownloadAction());
+
+            $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
+            $listField->getConfig()->removeComponentsByType("GridFieldEditButton");
+            $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
+        }
 
         return $form;
     }
@@ -54,7 +65,7 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
     );
 
     public function ItemEditForm() {
-        $form = parent::ItemEditForm();//Debug::dump($form);die;
+        $form = parent::ItemEditForm();//var_dump($form);die;
         $formActions = $form->Actions();
 
         if ($actions = $this->record->getCMSActions())
@@ -102,9 +113,10 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
     }
 
 
-    public function doDeleteRecord($data, $form) {
+    public function doDeleteRecord($data, $form) {//var_dump($this->getRequest());die;
         if($data['Type'] == "Delete"){
             $request = UserRequest::get()->filter("Email",$data['Email'])->first();
+            $request->Type = "Delete";
             $master_record = MasterRecord::get()->filter("Email",$data['Email'])->first();
 
 
@@ -120,13 +132,18 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
             $master_record->delete();
             $request->delete();
 
-            Controller::curr()->getResponse()->setStatusCode(
+            $backLink = $this->getBacklink();
+            /*Controller::curr()->getResponse()->setStatusCode(
                 200,
                 'Records are deleted.'
-            );
-            /*return Controller::curr()->redirect($this->getBackLink());*/
+            );*/
+            //return Controller::curr()->redirect($this->getBackLink());
 
-            return Controller::curr()->redirectBack();
+            //when an item is deleted, redirect to the parent controller
+            $controller = $this->getToplevelController();
+            $controller->getRequest()->addHeader('X-Pjax', 'Content'); // Force a content refresh
+
+            return $controller->redirect($backLink, 302); //redirect back to admin section
         }
 
         Controller::curr()->getResponse()->setStatusCode(
