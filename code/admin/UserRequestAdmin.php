@@ -10,7 +10,7 @@ class UserRequestAdmin extends ModelAdmin
 {
     private static $managed_models = array('UserRequest','MasterRecord');
     private static $url_segment = 'user-request';
-    private static $menu_title = 'Master Record User Request';
+    private static $menu_title = 'Master Record & User Request';
 
 
     public function init(){

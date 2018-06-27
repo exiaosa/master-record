@@ -6,7 +6,7 @@
  * Time: 3:58 PM
  */
 
-class MasterRecordAdmin extends ModelAdmin
+/*class MasterRecordAdmin extends ModelAdmin
 {
     private static $managed_models = array('MasterRecord');
     private static $url_segment = 'master-record';
@@ -32,4 +32,4 @@ class MasterRecordAdmin extends ModelAdmin
         return $form;
     }
 
-}
+}*/

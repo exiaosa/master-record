@@ -16,6 +16,6 @@ A module that add user form and user form record page.
 
         $this->extend('onAfterSubmit',$data); //$data is the saved dataobejct
        
-4. If you want to apply this module to User Defined Form, the form must contains the Email field (Edit the Field Name as "Email")    
+4. If you want to apply this module to User Defined Form, the form must contains the Email field (Edit the Field Name as "Email" or "Email_NUM")    
 5. All the user can receive an email with a link after sending request, the link can only be viewed once for secure reason     
     

@@ -16,17 +16,28 @@ class MasterRecordExtension extends Extension
 
         $items = $emailData['Fields']->items;
         $email = '';
+        $masterRecord='';
+        $count = 0;
 
         foreach ($items as $item) {
-            if ($item->Name == 'Email') {
-                $email = $item->Value;
+            if (strpos($item->Name, 'Email') !== false) {
+                if($item->Value !== NULL) {
+                    $email = $item->Value;
 
-                if (MasterRecord::get()->filter('Email', $email)->count() == 0) {
-                    $masterRecord = new MasterRecord();
-                } else {
-                    $masterRecord = MasterRecord::get()->filter('Email', $email)->first();
+                    $count++;
+
+                    if (MasterRecord::get()->filter('Email', $email)->count() == 0) {
+                        $masterRecord = new MasterRecord();
+                    } else {
+                        $masterRecord = MasterRecord::get()->filter('Email', $email)->first();
+                    }
                 }
             }
+        }
+
+
+        if($count == 0){
+            return false;
         }
 
         foreach ($items as $item){
