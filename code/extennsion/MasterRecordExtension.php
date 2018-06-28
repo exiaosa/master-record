@@ -38,20 +38,22 @@ class MasterRecordExtension extends Extension
 
         if($count == 0){
             return false;
-        }
+        }else{
+            foreach ($items as $item){//Debug::dump($item);die;
+                $id = $item->ID;
+                $record_class = $item->RecordClassName;
 
-        foreach ($items as $item){
-            $id = $item->ID;
-            $record_class = $item->RecordClassName;
+                $submission = new MasterRecordSubmission();
+                $submission->RecordsClassName = $record_class;
+                $submission->RecordID = $id;
+                $submission->write();
 
-            $submission = new MasterRecordSubmission();
-            $submission->RecordsClassName = $record_class;
-            $submission->RecordID = $id;
-            $submission->write();
+                $masterRecord->submissions()->add($submission);
+                $masterRecord->Email = $email;
+                $masterRecord->write();
+            }
 
-            $masterRecord->submissions()->add($submission);
-            $masterRecord->Email = $email;
-            $masterRecord->write();
+            $this->fileRecord($email);
         }
 
     }
