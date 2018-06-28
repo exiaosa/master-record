@@ -86,6 +86,8 @@ class MasterRecordPage_Controller extends Page_Controller
             $user = UserRequest::create();
             $user->update($data);
             $user->write();
+            
+            $this->extend('onAfterSubmit',$user);
 
 
         }else{
@@ -94,7 +96,8 @@ class MasterRecordPage_Controller extends Page_Controller
             $user->IsViewed = FALSE;
             $user->write();
         }
-        $this->extend('onAfterSubmit',$user);
+
+
 
         $email = Email::create();
         $email->setTo(trim($address));

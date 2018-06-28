@@ -36,7 +36,7 @@ class UserRequestAdmin extends ModelAdmin
 
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             //$listField->getConfig()->removeComponentsByType("GridFieldEditButton");
-            //$listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
+            $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
 
         }else if($this->modelClass == 'MasterRecord') {
             $listField = $form->Fields()->fieldByName($this->modelClass);
@@ -47,7 +47,7 @@ class UserRequestAdmin extends ModelAdmin
 
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             $listField->getConfig()->removeComponentsByType("GridFieldEditButton");
-            //$listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
+            $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
         }
 
         return $form;
@@ -65,7 +65,8 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
     );
 
     public function ItemEditForm() {
-        $form = parent::ItemEditForm();//var_dump($form);die;
+        $form = parent::ItemEditForm();
+
         $formActions = $form->Actions();
 
         if ($actions = $this->record->getCMSActions())
@@ -113,10 +114,11 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
     }
 
 
-    public function doDeleteRecord($data, $form) {//var_dump($this->getRequest());die;
+    public function doDeleteRecord($data, $form) {
         if($data['Type'] == "Delete"){
-            $request = UserRequest::get()->filter("Email",$data['Email'])->first();
-            $request->Type = "Delete";
+
+            //$request = UserRequest::get()->filter("Email",$data['Email'])->first();
+            //$request->Type = "Delete";
             $master_record = MasterRecord::get()->filter("Email",$data['Email'])->first();
 
 
@@ -130,18 +132,13 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
                 $submission->delete();
             }
             $master_record->delete();
-            $request->delete();
+            //$request->delete();
 
             $backLink = $this->getBacklink();
-            /*Controller::curr()->getResponse()->setStatusCode(
-                200,
-                'Records are deleted.'
-            );*/
-            //return Controller::curr()->redirect($this->getBackLink());
 
             //when an item is deleted, redirect to the parent controller
             $controller = $this->getToplevelController();
-//            /$controller->getRequest()->addHeader('X-Pjax', 'Content'); // Force a content refresh
+            $controller->getRequest()->addHeader('X-Pjax', 'Content'); // Force a content refresh
 
             return $controller->redirect($backLink, 302); //redirect back to admin section
         }
