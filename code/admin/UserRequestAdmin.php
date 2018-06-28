@@ -36,7 +36,7 @@ class UserRequestAdmin extends ModelAdmin
 
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             //$listField->getConfig()->removeComponentsByType("GridFieldEditButton");
-            $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
+            //$listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
 
         }else if($this->modelClass == 'MasterRecord') {
             $listField = $form->Fields()->fieldByName($this->modelClass);
@@ -47,7 +47,7 @@ class UserRequestAdmin extends ModelAdmin
 
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             $listField->getConfig()->removeComponentsByType("GridFieldEditButton");
-            $listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
+            //$listField->getConfig()->removeComponentsByType("GridFieldDeleteAction");
         }
 
         return $form;
