@@ -117,22 +117,25 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
     public function doDeleteRecord($data, $form) {
         if($data['Type'] == "Delete"){
 
-            //$request = UserRequest::get()->filter("Email",$data['Email'])->first();
+            $request = UserRequest::get()->filter("Email",$data['Email'])->first();
             //$request->Type = "Delete";
             $master_record = MasterRecord::get()->filter("Email",$data['Email'])->first();
 
 
             foreach($master_record->submissions() as $submission){
-
                 $class = $submission->RecordsClassName;
-                $id = $submission->RecordID;
-                $item = $class::get()->filter("ID",$id)->first();
 
-                $item->delete();
-                $submission->delete();
+                if($class !== 'UserRequest'){
+                    $id = $submission->RecordID;
+                    $item = $class::get()->filter("ID",$id)->first();
+
+                    $item->delete();
+                    $submission->delete();
+                }
+
             }
             $master_record->delete();
-            //$request->delete();
+            $request->delete();
 
             $backLink = $this->getBacklink();
 
