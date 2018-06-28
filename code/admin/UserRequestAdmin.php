@@ -141,7 +141,7 @@ class RequestFieldDetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
 
             //when an item is deleted, redirect to the parent controller
             $controller = $this->getToplevelController();
-            $controller->getRequest()->addHeader('X-Pjax', 'Content'); // Force a content refresh
+//            /$controller->getRequest()->addHeader('X-Pjax', 'Content'); // Force a content refresh
 
             return $controller->redirect($backLink, 302); //redirect back to admin section
         }
