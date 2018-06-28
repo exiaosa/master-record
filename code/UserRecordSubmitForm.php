@@ -35,6 +35,7 @@ class UserRecordSubmitForm extends Form
 
         $fields->push(TextField::create('Name', 'Name'));
         $fields->push(EmailField::create('Email','Email'));
+        $fields->push(LiteralField::create('Terms',MasterRecordConfig::current_config()->Terms));
 
         return $fields;
     }

@@ -131,30 +131,37 @@ class MasterRecordPage_Controller extends Page_Controller
 
         $request = UserRequest::get()->filter('Email',$email)->first();
 
-        if(Session::get('Validview') !== NULL){
-            $request->IsViewed = FALSE;
-            //$request->write();
-        }
-
-        if($request->IsViewed == 1 ){
-
-            if(Session::get('Validview') == NULL){
-                //$request->IsViewed = FALSE;
-                $siteConfig = MasterRecordConfig::current_config();
-                return $this->customise(array(
-                    'ShowRecord' => FALSE,
-                    'Error' => $siteConfig->DisableDisplayMessage
-                ));
+        if($request){
+            if(Session::get('Validview') !== NULL){
+                $request->IsViewed = FALSE;
+                //$request->write();
             }
 
+            if($request->IsViewed == 1 ){
+
+                if(Session::get('Validview') == NULL){
+                    //$request->IsViewed = FALSE;
+                    $siteConfig = MasterRecordConfig::current_config();
+                    return $this->customise(array(
+                        'ShowRecord' => FALSE,
+                        'Error' => $siteConfig->DisableDisplayMessage
+                    ));
+                }
+
+            }
+            Session::set('Validview','view');
+            $request->IsViewed = TRUE;
+            $request->write();
+
+            return $this->customise(array(
+                'Email' => $email,
+                'ShowRecord' => TRUE
+            ));
         }
-        Session::set('Validview','view');
-        $request->IsViewed = TRUE;
-        $request->write();
 
         return $this->customise(array(
-            'Email' => $email,
-            'ShowRecord' => TRUE
+            'ShowRecord' => FALSE,
+            'Error' => 'The info does not exist anymore!'
         ));
 
 

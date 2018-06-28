@@ -10,7 +10,8 @@ class MasterRecordConfig extends DataObject implements PermissionProvider
         'EmailBodyContent'=> 'HTMLText',
         'DeleteSuccesseMessage'=> 'HTMLText',
         'DeleteNote'=> 'HTMLText',
-        'DisableDisplayMessage' => 'HTMLText'
+        'DisableDisplayMessage' => 'HTMLText',
+        'Terms'=> 'HTMLText'
 
     );
 
@@ -27,13 +28,14 @@ class MasterRecordConfig extends DataObject implements PermissionProvider
         $fields = new FieldList(
             new TabSet("Root",
                 new Tab('Main',
-                    TextField::create('ButtonText','Submit Button Text'),
-                    HtmlEditorField::create('SubmitSuccessMessage', 'Submit Success Message')->setRows(10)
+                    HtmlEditorField::create('Terms','GDPR Terms & Conditions')->setRows(10)
                 ),
                 new Tab('Email',
                     TextField::create('EmailTitle','Email Subject'),
                     TextField::create('EmailFrom','Email From'),
-                    HtmlEditorField::create('EmailBodyContent', 'User Email Body Content')->setRows(10)
+                    HtmlEditorField::create('EmailBodyContent', 'User Email Body Content')->setRows(10),
+                    TextField::create('ButtonText','Submit Button Text'),
+                    HtmlEditorField::create('SubmitSuccessMessage', 'Submit Success Message')->setRows(10)
                 ),
                 new Tab('User Request',
                     HtmlEditorField::create('DeleteNote', 'User Delete Action Note')->setRows(10),
