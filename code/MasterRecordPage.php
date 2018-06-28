@@ -100,7 +100,7 @@ class MasterRecordPage_Controller extends Page_Controller
         $email->setTo(trim($address));
         $email->setFrom($siteConfig->EmailFrom);
         $email->setSubject($siteConfig->EmailTitle);
-        $email->setBody($siteConfig->EmailBodyContent. 'You can view this at <a href="'.$actual_link.'/?view='.$encode.'"</a>');
+        $email->setBody($siteConfig->EmailBodyContent. 'You can Click <a href="'.$actual_link.'/?view='.$encode.'">Here</a> to view your records.');
 
         $email->send();
 
