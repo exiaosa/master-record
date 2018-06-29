@@ -53,7 +53,7 @@ table td{
 
 table tr:hover{
     background: #efefef;
-    cursor:pointer;
+    //cursor:pointer;
 }
 
 table tr.pagination:hover{

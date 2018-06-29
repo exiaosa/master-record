@@ -29,7 +29,7 @@
                                     <% if $Up.getUserRecords($Email).NotFirstPage %>
                                         <a class="prev" href="$Up.getUserRecords($Email).PrevLink">Prev</a>
                                     <% end_if %>
-                                    <% loop $Up.getUserRecords($Email) %>
+                                    <% loop $Up.getUserRecords($Email).Pages %>
                                         <% if $CurrentBool %>
                                             $PageNum
                                         <% else %>

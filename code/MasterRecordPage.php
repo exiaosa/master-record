@@ -186,7 +186,7 @@ class MasterRecordPage_Controller extends Page_Controller
         $record = MasterRecord::get()->filter("Email",$email)->first();
 
         $pages = new PaginatedList($record->submissions(), $this->getRequest());
-        $pages->setPageLength(12);
+        $pages->setPageLength(18);
 
         return $pages;
     }
