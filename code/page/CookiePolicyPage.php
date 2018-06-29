@@ -13,7 +13,7 @@ class CookiePolicyPage extends Page
         parent::requireDefaultRecords();
         if(!CookiePolicyPage::get()->first()){
             $cookiePage = CookiePolicyPage::create();
-            $cookiePage->Title = 'Cookie Policy';
+            $cookiePage->Title = 'GDPR Cookie Policy';
             $cookiePage->write();
             $cookiePage->doPublish();
         }

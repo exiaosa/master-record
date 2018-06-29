@@ -18,4 +18,11 @@ A module that add user form and user form record page.
        
 4. If you want to apply this module to User Defined Form, the form must contains the Email field (Edit the Field Name as "Email" or "Email_NUM")    
 5. All the user can receive an email with a link after sending request, the link can only be viewed once for secure reason     
+
+6. The consent terms can be edited in CMS. 
+   In your form action, add following code:
+
+        LiteralField::create("Terms",MasterRecordConfig::current_config()->dbObject('Terms')->forTemplate())
+   In UserForm, add a new Field called "Form Terms"    
+        
     

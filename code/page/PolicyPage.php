@@ -13,7 +13,7 @@ class PolicyPage extends Page
         parent::requireDefaultRecords();
         if(!PolicyPage::get()->first()){
             $privacyPage = PolicyPage::create();
-            $privacyPage->Title = 'Privacy Policy';
+            $privacyPage->Title = 'GDPR Privacy Policy';
             $privacyPage->write();
             $privacyPage->doPublish();
         }

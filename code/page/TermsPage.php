@@ -13,7 +13,7 @@ class TermsPage extends Page
         parent::requireDefaultRecords();
         if(!TermsPage::get()->first()){
             $termsPage = TermsPage::create();
-            $termsPage->Title = 'Terms of Use';
+            $termsPage->Title = 'GDPR Terms of Use';
             $termsPage->write();
             $termsPage->doPublish();
         }
