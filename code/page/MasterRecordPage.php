@@ -144,7 +144,7 @@ class MasterRecordPage_Controller extends Page_Controller
 
         $request = UserRequest::get()->filter('Email',$email)->first();
 
-        if($request->count()){
+        if($request){
             if(Session::get('Validview') !== NULL){
                 $request->IsViewed = FALSE;
                 //$request->write();
