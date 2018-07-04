@@ -31,8 +31,10 @@ class UserRequestAdmin extends ModelAdmin
                 $gridField->setItemRequestClass('RequestFieldDetailForm_ItemRequest');
 
             $listField->getConfig()->addComponent(new GridFieldFilterHeader());
-            $listField->getConfig()->addComponent(new GridFieldDeleteDataAction());
+            $listField->getConfig()->addComponent(new GridFieldViewAction());
             $listField->getConfig()->addComponent(new GridFieldDownloadAction());
+            $listField->getConfig()->addComponent(new GridFieldDeleteDataAction());
+
 
             $listField->getConfig()->removeComponentsByType("GridFieldAddNewButton");
             $listField->getConfig()->removeComponentsByType("GridFieldEditButton");
