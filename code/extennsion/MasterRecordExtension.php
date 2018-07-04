@@ -39,7 +39,7 @@ class MasterRecordExtension extends Extension
         if($count == 0){
             return false;
         }else{
-            foreach ($items as $item){//Debug::dump($item);die;
+            foreach ($items as $item){
                 $id = $item->ID;
                 $record_class = $item->RecordClassName;
 
@@ -86,7 +86,7 @@ class MasterRecordExtension extends Extension
      * Function is to create the user html file for downloading
      * @return SS_HTTPResponse
      */
-    public function fileRecord($email){
+    public function fileRecord($email){Debug::dump($email);
         /*$vars = $this->request->requestVars();
         $email = $vars['Email'];
         $siteConfig = MasterRecordConfig::current_config();*/
@@ -120,7 +120,6 @@ class MasterRecordExtension extends Extension
                     $content = '<div class="title">'.$value.'</div>';
                     fwrite($fp,$content);
                 }
-                //fwrite($fp,$content);
             }
 
             $item_foot ='</div>';
@@ -133,10 +132,8 @@ class MasterRecordExtension extends Extension
         /*$fileName = '../assets/UserData/'.$file.'.zip';
         $files_to_zip = [dirname(__DIR__.'/../../assets/UserData/'.$file.'.html').'/'.$file.'.html'];
         $result = $this->createZip($files_to_zip, $fileName);
-
         if($result){
             unlink(dirname(__DIR__.'/../../assets/UserData/'.$file.'.html').'/'.$file.'.html');
-
         }*/
         $path ='assets/UserData/'. $file.'.html';
 

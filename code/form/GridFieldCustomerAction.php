@@ -114,31 +114,42 @@ class GridFieldDeleteDataAction implements GridField_ColumnProvider, GridField_A
     public function handleAction(GridField $gridField, $actionName, $arguments, $data)
     {
         if($actionName == 'deletedata') {
-            // perform your action here
             $email = $gridField->getList()->byID($arguments['RecordID'])->Email;
+            $type = $gridField->getList()->byID($arguments['RecordID'])->Type;
 
-            $userData = UserData::get()->filter("Email", $email)->first();
+            if($type == "Delete"){
 
-            foreach ($userData->Order() as $item) {
-                $item->MemberID = 0;
-                $item->IsUnlinked = TRUE;
-                $item->write();
+                $request = UserRequest::get()->filter("Email",$email)->first();
+
+                $master_record = MasterRecord::get()->filter("Email",$email)->first();
+
+
+                foreach($master_record->submissions() as $submission){
+                    $class = $submission->RecordsClassName;
+
+                   /* if($class !== 'UserRequest'){*/
+                        $id = $submission->RecordID;
+                        $item = $class::get()->filter("ID",$id)->first();
+
+                        $item->delete();
+                        $submission->delete();
+                    /*}*/
+
+                }
+                $master_record->delete();
+                $request->delete();
+
+                Controller::curr()->getResponse()->setStatusCode(
+                    200,
+                    'Data deleted..'
+                );
+
+            }else{
+                Controller::curr()->getResponse()->setStatusCode(
+                    405,
+                    'The record can only be delete when it is in DELETE Type.'
+                );
             }
-
-            foreach ($userData->ContactMessage() as $item) {
-                $item->delete();
-            }
-
-            foreach ($userData->NewsletterSubscriber() as $item) {
-                $item->delete();
-            }
-
-
-            // output a success message to the user
-            Controller::curr()->getResponse()->setStatusCode(
-                200,
-                'Contact and Subscriber records are deleted..'
-            );
         }
     }
 }

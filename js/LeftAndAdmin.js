@@ -21,6 +21,19 @@
             location.reload();
         });
 
+        $('.cms').on('click', '.delete-data', function() {
+            if (confirm("Are you sure you want to delete this record?")) {
+                if (confirm("Ok if you hit delete again this is irreversible.")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+
+
     });
 
 

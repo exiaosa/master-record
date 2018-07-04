@@ -71,8 +71,13 @@ class MasterRecordPage_Controller extends Page_Controller
 
 
     public function doSubmission($data, $form){
-        $name = $data['Name'];
         $address = $data['Email'];
+
+        if(MasterRecord::get()->filter('Email',$address)->count() == 0){
+            return $this->redirect($this->Link() . '?nouser=1');
+        }
+
+
         $siteConfig = MasterRecordConfig::current_config();
         $user = '';
 
@@ -87,15 +92,14 @@ class MasterRecordPage_Controller extends Page_Controller
             $user->update($data);
             $user->write();
 
+            $this->extend('onAfterSubmit',$user);
+
         }else{
             $user = UserRequest::get()->filter('Email',$address)->first();
             $user->Encode = $encode;
             $user->IsViewed = FALSE;
             $user->write();
         }
-
-
-        $this->extend('onAfterSubmit',$user);
 
         $email = Email::create();
         $email->setTo(trim($address));
@@ -116,6 +120,14 @@ class MasterRecordPage_Controller extends Page_Controller
 
     }
 
+    public function IsNoUser(){
+
+        if(array_key_exists("nouser",$this->getRequest()->getVars())){
+            return $this->getRequest()->getVars()["nouser"];
+        }
+
+    }
+
     public function IsRecord(){
 
         if(array_key_exists("view",$this->getRequest()->getVars())){
@@ -132,7 +144,7 @@ class MasterRecordPage_Controller extends Page_Controller
 
         $request = UserRequest::get()->filter('Email',$email)->first();
 
-        if($request){
+        if($request->count()){
             if(Session::get('Validview') !== NULL){
                 $request->IsViewed = FALSE;
                 //$request->write();
