@@ -117,7 +117,7 @@
 .MasterRecordPage .error-message{
     text-align: center;
     color:red;
-    font-weight: bold;
+    /*/font-weight: bold;*/
     font-size: 18px;
     padding:20px 0;
 }
