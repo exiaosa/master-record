@@ -14,7 +14,7 @@
 }
 
 #UserRecordSubmitForm_UserRecordSubmitForm{
-    width: 500px;
+    width: 90%;
     margin: 0 auto;
 }
 
@@ -122,6 +122,15 @@
     padding:20px 0;
 }
 
+@media only screen and (max-width: 920px) {
+    .MasterRecordPage .half-section{
+        width:100%;
+    }
+
+    #UserRecordSubmitForm_UserRecordSubmitForm{
+        width: 500px;
+        padding-bottom:60px;
+    }
 
 @media only screen and (max-width: 650px) {
     #UserRecordSubmitForm_UserRecordSubmitForm{
