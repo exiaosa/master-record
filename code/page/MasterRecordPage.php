@@ -105,7 +105,7 @@ class MasterRecordPage_Controller extends Page_Controller
         $email->setTo(trim($address));
         $email->setFrom($siteConfig->EmailFrom);
         $email->setSubject($siteConfig->EmailTitle);
-        $email->setBody($siteConfig->EmailBodyContent. 'You can Click <a href="'.$actual_link.'/?view='.$encode.'">Here</a> to view your records.');
+        $email->setBody($siteConfig->EmailBodyContent. ' <a href="'.$actual_link.'/?view='.$encode.'">User Data Review</a> ');
 
         $email->send();
 
@@ -139,7 +139,7 @@ class MasterRecordPage_Controller extends Page_Controller
     public function getUserInfo(){
 
         $code = $this->getRequest()->getVars()["view"];
-        $decode = base64_decode($code);//var_dump(base64_encode(date("Y-m-d").'/'.$email));
+        $decode = base64_decode($code);
         $email = substr($decode, strpos($decode, "/") + 1);
 
         $request = UserRequest::get()->filter('Email',$email)->first();
@@ -147,13 +147,12 @@ class MasterRecordPage_Controller extends Page_Controller
         if($request){
             if(Session::get('Validview') !== NULL){
                 $request->IsViewed = FALSE;
-                //$request->write();
             }
 
             if($request->IsViewed == 1 ){
 
                 if(Session::get('Validview') == NULL){
-                    //$request->IsViewed = FALSE;
+
                     $siteConfig = MasterRecordConfig::current_config();
                     return $this->customise(array(
                         'ShowRecord' => FALSE,
@@ -197,7 +196,25 @@ class MasterRecordPage_Controller extends Page_Controller
     public function getUserRecords($email){
         $record = MasterRecord::get()->filter("Email",$email)->first();
 
-        $pages = new PaginatedList($record->submissions(), $this->getRequest());
+        $list = new ArrayList;
+        $formID = 0;
+
+        foreach ($record->submissions() as $submission){
+            if($submission->RecordsClassName !== 'SubmittedFormField'){
+                $list->push($submission);
+            }else{
+                $class = $submission->RecordsClassName;
+                $id = $submission->RecordID;
+                $item = $class::get()->filter("ID",$id)->first();
+
+                if($item->ParentID !== $formID){
+                    $list->push($submission);
+                    $formID = $item->ParentID;
+                }
+            }
+        }
+
+        $pages = new PaginatedList($list, $this->getRequest());
         $pages->setPageLength(18);
 
         return $pages;

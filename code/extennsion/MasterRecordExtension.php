@@ -86,10 +86,7 @@ class MasterRecordExtension extends Extension
      * Function is to create the user html file for downloading
      * @return SS_HTTPResponse
      */
-    public function fileRecord($email){Debug::dump($email);
-        /*$vars = $this->request->requestVars();
-        $email = $vars['Email'];
-        $siteConfig = MasterRecordConfig::current_config();*/
+    public function fileRecord($email){
 
         $record = MasterRecord::get()->filter("Email",$email)->first();
         $content = "";
@@ -108,22 +105,88 @@ class MasterRecordExtension extends Extension
         $foot = '<div class="footer">Generate on '.$record->Created.'</div></body></html>';
         fwrite($fp,$head);
 
+        $formID = 0;
+        $flag = false; //flag is to detect is normal form or userForm
+
         foreach ($record->submissions() as $submission){
             $class = $submission->RecordsClassName;
             $id = $submission->RecordID;
             $item = $class::get()->filter("ID",$id)->first();
+            $check = 'no'; //Check whether the items belongs to same form
 
-            $item_head ='<div class="item">';
-            fwrite($fp,$item_head);
-            foreach($item->toMap() as $key=>$value){
-                if($key !== 'ClassName' && $key !== 'RecordClassName'){
-                    $content = '<div class="title">'.$value.'</div>';
-                    fwrite($fp,$content);
+
+            if($item->ClassName == 'SubmittedFormField'){
+                $flag = true;
+
+
+                if($item->ParentID == $formID){
+                    $check = 'yes';
+                }else{
+                    $check = 'no';
                 }
+
+                foreach($item->toMap() as $key=>$value){
+
+                    if($key == 'Value' && $value !== ''){
+
+                        //The first, generate <div item>
+                        if($formID == 0){
+                            $item_head ='<div class="item">';
+                            fwrite($fp,$item_head);
+                        }
+
+                        if($check == 'yes'){
+                            $content = '<div class="title">'.$value.'</div>';
+                            fwrite($fp,$content);
+
+                        }else{
+                            //If start different form, close the previous div, and open the new one
+                            if($formID !== 0) {
+                                $item_foot = '</div>';
+                                fwrite($fp, $item_foot);
+
+
+                                $item_head = '<div class="item">';
+                                fwrite($fp, $item_head);
+
+                                $content = '<div class="title">'.$value.'</div>';
+                                fwrite($fp,$content);
+                            }
+
+                        }
+                        $formID = $item->ParentID;
+                    }
+                }
+
+
+            }else{
+                //If comes to normal form, set flag and close previous div
+                if($flag == true){
+                    $flag = false;
+
+                    $item_foot = '</div>';
+                    fwrite($fp, $item_foot);
+                }
+
+                $item_head ='<div class="item">';
+                fwrite($fp,$item_head);
+
+                foreach($item->toMap() as $key=>$value){
+
+                    if($key !== 'ClassName' && $key !== 'RecordClassName' && $key!== 'LastEdited' && $key!== 'Encode'){
+
+                        $content = '<div class="title">'.$value.'</div>';
+                        fwrite($fp,$content);
+                    }
+                }
+
+                $item_foot ='</div>';
+                fwrite($fp,$item_foot);
             }
 
-            $item_foot ='</div>';
-            fwrite($fp,$item_foot);
+
+
+
         }
         fwrite($fp,$foot);
         fclose($fp);
