@@ -4,7 +4,7 @@
 
 .MasterRecordPage a{
     cursor: pointer;
-    text-decoration: underline;
+    text-decoration: none;
     color: #467302;
     outline: none;
 }
@@ -15,7 +15,6 @@
 
 #UserRecordSubmitForm_UserRecordSubmitForm{
     width: 90%;
-    margin: 0 auto;
 }
 
 
@@ -130,20 +129,24 @@
     #UserRecordSubmitForm_UserRecordSubmitForm{
         width: 500px;
         padding-bottom:60px;
+        margin: 0 auto;
+    }
+
+    .MasterRecordPage table{
+        padding-bottom:60px;
     }
 
 @media only screen and (max-width: 650px) {
     #UserRecordSubmitForm_UserRecordSubmitForm{
         width: 100%;
-        padding: 20px 0;
         margin: 0 auto;
     }
 
-    table{
+    .MasterRecordPage table{
         width: 100%;
     }
 
-    table td{
+    .MasterRecordPage table td{
         padding: 10px 5px;
     }
 
